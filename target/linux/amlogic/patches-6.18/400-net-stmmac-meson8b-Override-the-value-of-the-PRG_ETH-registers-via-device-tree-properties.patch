@@ -10,7 +10,7 @@ Subject: [PATCH] net: stmmac: meson8b: Override the value of the PRG_ETH
 
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-@@ -389,6 +389,29 @@ static int meson8b_init_prg_eth(struct meson8b_dwmac *dwmac)
+@@ -389,6 +389,29 @@ static int meson8b_init_prg_eth(struct m
  	return 0;
  }
  
@@ -40,7 +40,7 @@ Subject: [PATCH] net: stmmac: meson8b: Override the value of the PRG_ETH
  static int meson8b_dwmac_probe(struct platform_device *pdev)
  {
  	struct plat_stmmacenet_data *plat_dat;
-@@ -469,6 +492,8 @@
+@@ -469,6 +492,8 @@ static int meson8b_dwmac_probe(struct pl
  	if (ret)
  		return ret;
  

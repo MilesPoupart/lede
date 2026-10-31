@@ -1,6 +1,6 @@
 --- a/include/linux/slab.h
 +++ b/include/linux/slab.h
-@@ -1071,6 +1071,55 @@
+@@ -1071,6 +1071,55 @@ void *kmalloc_nolock_noprof(size_t size,
  #define kvzalloc_flex(P, FAM, COUNT, ...) \
  	__alloc_flex(kvzalloc, default_gfp(__VA_ARGS__), typeof(P), FAM, COUNT)
  

@@ -7,7 +7,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
 
 --- a/drivers/thermal/Kconfig
 +++ b/drivers/thermal/Kconfig
-@@ -508,7 +508,7 @@
+@@ -508,7 +508,7 @@ config KHADAS_MCU_FAN_THERMAL
  config LOONGSON2_THERMAL
  	tristate "Loongson-2 SoC series thermal driver"
  	depends on LOONGARCH || COMPILE_TEST
@@ -52,7 +52,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  struct loongson2_thermal_chip_data {
  	unsigned int thermal_sensor_sel;
  	unsigned int flags;
-@@ -122,19 +133,65 @@
+@@ -122,19 +133,65 @@ static const struct thermal_zone_device_
  	.set_trips = loongson2_thermal_set_trips,
  };
  
@@ -119,7 +119,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  
  	data->ctrl_reg = devm_platform_ioremap_resource(pdev, 0);
  	if (IS_ERR(data->ctrl_reg))
-@@ -151,31 +208,30 @@
+@@ -151,31 +208,30 @@ static int loongson2_thermal_probe(struc
  		thermal_ops = &loongson2_2k1000_of_thermal_ops;
  	}
  
@@ -168,7 +168,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  	devm_thermal_add_hwmon_sysfs(dev, tzd);
  
  	return 0;
-@@ -204,6 +260,53 @@
+@@ -204,6 +260,53 @@ static const struct of_device_id of_loon
  };
  MODULE_DEVICE_TABLE(of, of_loongson2_thermal_match);
  
@@ -222,7 +222,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  static struct platform_driver loongson2_thermal_driver = {
  	.driver = {
  		.name		= "loongson2_thermal",
-@@ -211,7 +314,27 @@
+@@ -211,7 +314,27 @@ static struct platform_driver loongson2_
  	},
  	.probe	= loongson2_thermal_probe,
  };

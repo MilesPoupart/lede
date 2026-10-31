@@ -21,7 +21,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
 ---
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -4161,11 +4161,33 @@ int airoha_eth_pon_xmit_control(
+@@ -4161,11 +4161,33 @@ drop:
  }
  EXPORT_SYMBOL_GPL(airoha_eth_pon_xmit_control);
  
@@ -68,7 +68,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	return 0;
  }
  EXPORT_SYMBOL_GPL(airoha_eth_pon_replace_flows);
-@@ -4247,12 +4266,11 @@ int airoha_eth_pon_configure_epon(struct net_device *netdev, u8 channel,
+@@ -4247,12 +4266,11 @@ int airoha_eth_pon_configure_epon(struct
  		return -EOPNOTSUPP;
  	if (valid && channel >= 32)
  		return -ERANGE;
@@ -97,7 +97,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	/* Must be last --ends in a flexible-array member. */
  	struct airoha_foe_entry data;
-@@ -816,6 +822,7 @@ airoha_qdma_deref(struct airoha_gdm_dev *dev)
+@@ -816,6 +822,7 @@ airoha_qdma_deref(struct airoha_gdm_dev
  
  void airoha_ppe_set_xmit_frame_size(struct airoha_gdm_dev *dev);
  void airoha_ppe_set_cpu_port(struct airoha_gdm_dev *dev, u8 ppe_id, u8 fport);
@@ -115,7 +115,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  #include <linux/ip.h>
  #include <linux/ipv6.h>
  #include <linux/of_platform.h>
-@@ -338,18 +339,99 @@ static void airoha_ppe_foe_set_bridge_addrs(struct airoha_foe_bridge *br,
+@@ -338,18 +339,99 @@ static void airoha_ppe_foe_set_bridge_ad
  	br->src_mac_lo = get_unaligned_be32(eh->h_source + 2);
  }
  
@@ -216,7 +216,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	val = FIELD_PREP(AIROHA_FOE_IB1_BIND_STATE, AIROHA_FOE_STATE_BIND) |
  	      FIELD_PREP(AIROHA_FOE_IB1_BIND_PACKET_TYPE, type) |
-@@ -377,10 +459,12 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+@@ -377,10 +459,12 @@ static int airoha_ppe_foe_entry_prepare(
  		} else {
  			struct airoha_gdm_dev *dev = netdev_priv(netdev);
  			struct airoha_gdm_port *port;
@@ -229,7 +229,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  			port = dev->port;
  			if (dsa_port >= 0 || airoha_is_lan_gdm_dev(dev))
-@@ -395,8 +479,17 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+@@ -395,8 +479,17 @@ static int airoha_ppe_foe_entry_prepare(
  			 * channel according to the DSA user port index, rely
  			 * on port id otherwise.
  			 */
@@ -249,7 +249,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  			priority = rt_tos2priority(dsfield);
  			priority = priority % AIROHA_NUM_QOS_QUEUES;
  			qdata |= FIELD_PREP(AIROHA_FOE_CHANNEL, channel) |
-@@ -413,6 +506,9 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+@@ -413,6 +506,9 @@ static int airoha_ppe_foe_entry_prepare(
  			if (dsa_port >= 0)
  				val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ,
  						  dsa_port);
@@ -259,7 +259,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  			smac_id = port->id;
  		}
-@@ -472,6 +568,13 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
+@@ -472,6 +568,13 @@ static int airoha_ppe_foe_entry_prepare(
  	} else if (dsa_port >= 0) {
  		l2->etype = BIT(dsa_port);
  		l2->etype |= !data->vlan.num ? BIT(15) : 0;
@@ -273,7 +273,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	} else if (data->pppoe.num) {
  		l2->etype = ETH_P_PPP_SES;
  	}
-@@ -851,6 +954,43 @@ static void airoha_ppe_foe_flow_remove_entry(struct airoha_ppe *ppe,
+@@ -851,6 +954,43 @@ static void airoha_ppe_foe_flow_remove_e
  	spin_unlock_bh(&ppe_lock);
  }
  
@@ -317,7 +317,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static int
  airoha_ppe_foe_commit_subflow_entry(struct airoha_ppe *ppe,
  				    struct airoha_flow_table_entry *e,
-@@ -1091,6 +1231,7 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
+@@ -1091,6 +1231,7 @@ static int airoha_ppe_flow_offload_repla
  {
  	struct flow_rule *rule = flow_cls_offload_flow_rule(f);
  	struct airoha_flow_table_entry *e;
@@ -325,7 +325,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	struct airoha_flow_data data = {};
  	struct net_device *odev = NULL;
  	struct flow_action_entry *act;
-@@ -1199,9 +1340,15 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
+@@ -1199,9 +1340,15 @@ static int airoha_ppe_flow_offload_repla
  		return -EINVAL;
  
  	err = airoha_ppe_foe_entry_prepare(eth, &hwe, odev, offload_type,
@@ -343,7 +343,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_PORTS)) {
  		struct flow_match_ports ports;
-@@ -1271,7 +1418,9 @@ static int airoha_ppe_flow_offload_replace(struct airoha_eth *eth,
+@@ -1271,7 +1418,9 @@ static int airoha_ppe_flow_offload_repla
  	if (!e)
  		return -ENOMEM;
  
@@ -363,7 +363,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  #include "airoha_eth.h"
  
  static void airoha_debugfs_ppe_print_tuple(struct seq_file *m,
-@@ -173,9 +174,47 @@ static int airoha_ppe_debugfs_foe_bind_show(struct seq_file *m, void *private)
+@@ -173,9 +174,47 @@ static int airoha_ppe_debugfs_foe_bind_s
  }
  DEFINE_SHOW_ATTRIBUTE(airoha_ppe_debugfs_foe_bind);
  

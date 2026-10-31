@@ -5,7 +5,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
 
 --- a/drivers/net/ethernet/Kconfig
 +++ b/drivers/net/ethernet/Kconfig
-@@ -205,3 +205,5 @@
+@@ -205,3 +205,5 @@ source "drivers/net/ethernet/xilinx/Kcon
  source "drivers/net/ethernet/xircom/Kconfig"
  
  endif # ETHERNET
@@ -13,7 +13,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
 +source "drivers/net/ethernet/phytium/Kconfig"
 --- a/drivers/net/ethernet/Makefile
 +++ b/drivers/net/ethernet/Makefile
-@@ -108,3 +108,5 @@
+@@ -108,3 +108,5 @@ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xirco
  obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
  obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
  obj-$(CONFIG_OA_TC6) += oa_tc6.o

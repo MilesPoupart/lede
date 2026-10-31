@@ -18,7 +18,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  #include "pcs-airoha.h"
  
-@@ -1478,10 +1479,21 @@
+@@ -1478,10 +1479,21 @@ static int an7583_pcs_pcie_alloc_maps(st
  	return 0;
  }
  
@@ -41,7 +41,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	struct device *dev = &pdev->dev;
  	struct airoha_pcs_priv *priv;
  	int index, ret;
-@@ -1615,12 +1627,11 @@
+@@ -1615,12 +1627,11 @@ static int airoha_pcs_probe(struct platf
  
  	platform_set_drvdata(pdev, priv);
  
@@ -60,7 +60,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static const struct airoha_pcs_match_data an7581_pcs_eth = {
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -4493,7 +4493,7 @@
+@@ -4493,7 +4493,7 @@ static int airoha_fill_available_pcs(str
  	struct device *dev = config->dev;
  
  	return fwnode_phylink_pcs_parse(dev_fwnode(dev), available_pcs,
@@ -69,7 +69,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  }
  
  static int airoha_setup_phylink(struct net_device *netdev)
-@@ -4531,7 +4531,11 @@
+@@ -4531,7 +4531,11 @@ static int airoha_setup_phylink(struct n
  					   MAC_10 | MAC_100 | MAC_1000 |
  					   MAC_2500FD | MAC_5000FD | MAC_10000FD;
  

@@ -9,7 +9,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
 ---
 --- a/drivers/block/fitblk.c
 +++ b/drivers/block/fitblk.c
-@@ -637,6 +637,8 @@
+@@ -637,6 +637,8 @@ static struct platform_driver fitblk_dri
  
  static int __init fitblk_init(void)
  {
@@ -18,7 +18,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	/* detect U-Boot firmware */
  	ubootver = of_get_property(of_chosen, "u-boot,version", NULL);
  	if (!ubootver)
-@@ -651,9 +653,16 @@
+@@ -651,9 +653,16 @@ static int __init fitblk_init(void)
  		return -ENODEV;
  
  	refcount_set(&num_devs, 1);

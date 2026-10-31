@@ -9,7 +9,7 @@ Subject: [PATCH] PCI: dwc: Add a device tree property to skip PCIe version
 
 --- a/drivers/pci/controller/dwc/pcie-designware.c
 +++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -203,6 +203,15 @@
+@@ -203,6 +203,15 @@ void dw_pcie_version_detect(struct dw_pc
  {
  	u32 ver;
  

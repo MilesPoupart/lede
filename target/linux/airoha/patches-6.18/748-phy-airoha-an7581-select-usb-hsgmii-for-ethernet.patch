@@ -25,7 +25,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  /* U2PHY */
  #define AIROHA_USB_PHY_FMCR0			0x100
  #define   AIROHA_USB_PHY_MONCLK_SEL		GENMASK(27, 26)
-@@ -414,10 +420,29 @@
+@@ -414,10 +420,29 @@ static int airoha_usb_phy_u2_set_mode(st
  }
  
  static int airoha_usb_phy_u3_set_mode(struct airoha_usb_phy_priv *priv,
@@ -56,7 +56,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	/* Only USB2 supports PCIe mode */
  	if (mode == PHY_MODE_PCIE &&
  	    priv->serdes_port != AIROHA_SCU_SERDES_USB2)
-@@ -431,7 +456,11 @@
+@@ -431,7 +456,11 @@ static int airoha_usb_phy_u3_set_mode(st
  	regmap_update_bits(priv->scu, AIROHA_SCU_SSTR,
  			   AIROHA_SCU_SSTR_USB_PCIE_SEL, sel);
  
@@ -69,7 +69,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  }
  
  static int airoha_usb_phy_set_mode(struct phy *phy, enum phy_mode mode, int submode)
-@@ -443,7 +472,7 @@
+@@ -443,7 +472,7 @@ static int airoha_usb_phy_set_mode(struc
  	case PHY_TYPE_USB2:
  		return airoha_usb_phy_u2_set_mode(priv, mode);
  	case PHY_TYPE_USB3:

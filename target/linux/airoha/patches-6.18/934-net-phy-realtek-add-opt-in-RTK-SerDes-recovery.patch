@@ -20,7 +20,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  #define RTL8201F_IER				0x13
  
  #define RTL8201F_ISR				0x1e
-@@ -2423,6 +2426,10 @@
+@@ -2423,6 +2426,10 @@ static void rtl826x_link_change_notify(s
  {
  	struct rtl826x_priv *priv = phydev->priv;
  
@@ -31,7 +31,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	if (phydev->state != PHY_RUNNING) {
  		if (!priv->sds_work_disabled) {
  			disable_delayed_work(&priv->sds_work);
-@@ -2459,6 +2466,10 @@
+@@ -2459,6 +2466,10 @@ static int rtl826x_probe(struct phy_devi
  		return -ENOMEM;
  
  	priv->enable_pma_low_power = device_property_read_bool(dev, "realtek,enable-pma-low-power");
@@ -42,7 +42,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	priv->phydev = phydev;
  	phydev->priv = priv;
  
-@@ -2638,11 +2649,17 @@
+@@ -2638,11 +2649,17 @@ static int rtl825xb_get_features(struct
  
  static int rtl826x_config_aneg(struct phy_device *phydev)
  {
@@ -60,7 +60,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	if (phydev->autoneg == AUTONEG_DISABLE)
  		return genphy_c45_pma_setup_forced(phydev);
  
-@@ -2672,8 +2689,33 @@
+@@ -2672,8 +2689,33 @@ static int rtl826x_config_aneg(struct ph
  	return genphy_c45_check_and_restart_aneg(phydev, changed);
  }
  
@@ -94,7 +94,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	int status;
  	int ret;
  
-@@ -2704,7 +2746,96 @@
+@@ -2704,7 +2746,96 @@ static int rtl826x_read_status(struct ph
  			return ret;
  	}
  
@@ -217,7 +217,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	bool sds_work_disabled;
 --- a/drivers/net/phy/realtek/phy_patch_rtl826x.c
 +++ b/drivers/net/phy/realtek/phy_patch_rtl826x.c
-@@ -117,6 +117,36 @@
+@@ -117,6 +117,36 @@ static int rtl826x_phy_patch_sds_modify(
  	return rtl826x_phy_patch_sds_set(phydev, sds_page, sds_reg, (ret & ~mask) | data);
  }
  
@@ -254,7 +254,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static int rtl826x_phy_patch_op(struct phy_device *phydev, const struct rtlgen_hwpatch *patch)
  {
  	u32 mask = GENMASK(patch->msb, patch->lsb);
-@@ -230,7 +260,7 @@
+@@ -230,7 +260,7 @@ static int rtl826x_phy_patch_db_init(str
  	struct rtlgen_phy_patch_db *patch_db;
  	struct rtlgen_hwpatch *patches;
  	const struct firmware *fw;
@@ -263,7 +263,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	int ret;
  
  	ret = request_firmware_direct(&fw, fw_name, dev);
-@@ -253,17 +283,43 @@
+@@ -253,17 +283,43 @@ static int rtl826x_phy_patch_db_init(str
  
  	patches = (struct rtlgen_hwpatch *)fw->data;
  	count = fw->size / sizeof(*patches);
@@ -311,7 +311,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
 --- a/drivers/net/phy/realtek/phy_patch_rtl826x.h
 +++ b/drivers/net/phy/realtek/phy_patch_rtl826x.h
-@@ -12,4 +12,6 @@
+@@ -12,4 +12,6 @@ int rtl826x_phy_patch_sds_set(struct phy
  int rtl8261n_phy_patch_db_init(struct phy_device *phydev);
  int rtl8264b_phy_patch_db_init(struct phy_device *phydev);
  

@@ -35,7 +35,7 @@ Subject: [PATCH] fix: add TEXT_OFFSET patch for legacy amlogic uboot
  #endif /* __ARM64_KERNEL_IMAGE_H */
 --- a/arch/arm64/kernel/setup.c
 +++ b/arch/arm64/kernel/setup.c
-@@ -323,8 +323,8 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
+@@ -323,8 +323,8 @@ void __init __no_sanitize_address setup_
  	efi_init();
  
  	if (!efi_enabled(EFI_BOOT)) {

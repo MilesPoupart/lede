@@ -9,7 +9,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
 
 --- a/drivers/net/ethernet/airoha/airoha_eth.c
 +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2264,6 +2264,8 @@ static int airoha_dev_stop(struct net_device *netdev)
+@@ -2264,6 +2264,8 @@ static int airoha_dev_stop(struct net_de
  	if (netdev->features & NETIF_F_LRO)
  		airoha_dev_lro_disable(dev);
  

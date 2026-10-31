@@ -8,8 +8,8 @@ Keep the 6.18 QCOM target aligned so platforms with longer cmd-db level
 maps do not fail or truncate power-domain level mapping.
 
 Signed-off-by: QWRT Build <build@qwrt.local>
---- a/drivers/pmdomain/qcom/rpmhpd.c	2026-07-02 16:56:51.127330263 +0800
-+++ b/drivers/pmdomain/qcom/rpmhpd.c	2026-07-02 16:56:51.131876160 +0800
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
 @@ -19,7 +19,7 @@
  
  #define domain_to_rpmhpd(domain) container_of(domain, struct rpmhpd, pd)

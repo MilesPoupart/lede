@@ -44,7 +44,7 @@ Link: https://lore.kernel.org/r/20250930182450.563016-3-imre.deak@intel.com
 
 --- a/drivers/gpu/drm/display/drm_dp_helper.c
 +++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -2834,6 +2834,158 @@
+@@ -2834,6 +2834,158 @@ int drm_dp_dsc_sink_supported_input_bpcs
  }
  EXPORT_SYMBOL(drm_dp_dsc_sink_supported_input_bpcs);
  
@@ -205,7 +205,7 @@ Link: https://lore.kernel.org/r/20250930182450.563016-3-imre.deak@intel.com
  				  u8 *buf, int buf_size)
 --- a/include/drm/display/drm_dp_helper.h
 +++ b/include/drm/display/drm_dp_helper.h
-@@ -203,6 +203,11 @@
+@@ -203,6 +203,11 @@ u8 drm_dp_dsc_sink_max_slice_count(const
  u8 drm_dp_dsc_sink_line_buf_depth(const u8 dsc_dpcd[DP_DSC_RECEIVER_CAP_SIZE]);
  int drm_dp_dsc_sink_supported_input_bpcs(const u8 dsc_dpc[DP_DSC_RECEIVER_CAP_SIZE],
  					 u8 dsc_bpc[3]);
@@ -228,7 +228,7 @@ Link: https://lore.kernel.org/r/20250930182450.563016-3-imre.deak@intel.com
  
  #define DP_DSC_RC_BUF_SIZE                  0x063
  
-@@ -1683,6 +1685,7 @@
+@@ -1683,6 +1685,7 @@ enum drm_dp_phy {
  #define DP_BRANCH_OUI_HEADER_SIZE	0xc
  #define DP_RECEIVER_CAP_SIZE		0xf
  #define DP_DSC_RECEIVER_CAP_SIZE        0x10 /* DSC Capabilities 0x60 through 0x6F */

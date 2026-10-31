@@ -9,7 +9,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
 
 --- a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
 +++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
-@@ -214,7 +214,7 @@
+@@ -214,7 +214,7 @@ static int airoha_ppe_debugfs_config_sho
  			   airoha_fe_rr(eth, REG_PPE_PPE_FLOW_CFG(i)));
  		seq_printf(m, "ppe%u_table_cfg: %08x\n", i,
  			   airoha_fe_rr(eth, REG_PPE_TB_CFG(i)));

@@ -15,7 +15,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
 
 --- a/drivers/net/pcs/airoha/pcs-airoha-common.c
 +++ b/drivers/net/pcs/airoha/pcs-airoha-common.c
-@@ -1415,6 +1415,7 @@
+@@ -1415,6 +1415,7 @@ static const struct airoha_pcs_match_dat
  };
  
  static const struct airoha_pcs_match_data an7583_pcs_eth = {
@@ -23,7 +23,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	.port_type = AIROHA_PCS_ETH,
  	.usxgmii_rx_gb_out_vld_tweak = true,
  	.usxgmii_xfi_mode_sel = true,
-@@ -1423,6 +1424,7 @@
+@@ -1423,6 +1424,7 @@ static const struct airoha_pcs_match_dat
  };
  
  static const struct airoha_pcs_match_data an7583_pcs_pon = {
@@ -31,7 +31,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	.port_type = AIROHA_PCS_PON,
  	.usxgmii_rx_gb_out_vld_tweak = true,
  	.usxgmii_xfi_mode_sel = true,
-@@ -1431,6 +1433,7 @@
+@@ -1431,6 +1433,7 @@ static const struct airoha_pcs_match_dat
  };
  
  static const struct airoha_pcs_match_data an7583_pcs_pcie = {
@@ -39,7 +39,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	.port_type = AIROHA_PCS_PCIE,
  	.usxgmii_rx_gb_out_vld_tweak = true,
  	.usxgmii_xfi_mode_sel = true,
-@@ -1439,6 +1442,7 @@
+@@ -1439,6 +1442,7 @@ static const struct airoha_pcs_match_dat
  };
  
  static const struct airoha_pcs_match_data an7583_pcs_usb = {

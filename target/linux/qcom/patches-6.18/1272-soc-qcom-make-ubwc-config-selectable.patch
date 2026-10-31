@@ -1,6 +1,6 @@
 --- a/drivers/soc/qcom/Kconfig
 +++ b/drivers/soc/qcom/Kconfig
-@@ -298,7 +298,8 @@
+@@ -298,7 +298,8 @@ config QCOM_PBS
  endmenu
  
  config QCOM_UBWC_CONFIG

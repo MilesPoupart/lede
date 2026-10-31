@@ -42,7 +42,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  /* Bitfields in NCR */
  #define MACB_LB_OFFSET		0 /* reserved */
  #define MACB_LB_SIZE		1
-@@ -1228,6 +1258,7 @@
+@@ -1228,6 +1258,7 @@ struct macb_config {
  	unsigned int		max_tx_length;
  	int	jumbo_max_len;
  	const struct macb_usrio_config *usrio;
@@ -50,7 +50,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  };
  
  struct tsu_incr {
-@@ -1373,6 +1404,7 @@
+@@ -1373,6 +1404,7 @@ struct macb {
  
  	struct macb_pm_data pm_data;
  	const struct macb_usrio_config *usrio;
@@ -68,7 +68,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  #include <linux/clk.h>
  #include <linux/crc32.h>
  #include <linux/dma-mapping.h>
-@@ -797,6 +798,174 @@
+@@ -797,6 +798,174 @@ static void gem_shuffle_tx_rings(struct
  		gem_shuffle_tx_one_ring(queue);
  }
  
@@ -243,7 +243,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  static void macb_mac_link_up(struct phylink_config *config,
  			     struct phy_device *phy,
  			     unsigned int mode, phy_interface_t interface,
-@@ -853,6 +1022,9 @@
+@@ -853,6 +1022,9 @@ static void macb_mac_link_up(struct phyl
  		gem_shuffle_tx_rings(bp);
  	}
  
@@ -253,7 +253,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  	/* Enable Rx and Tx; Enable PTP unicast */
  	ctrl = macb_readl(bp, NCR);
  	if (gem_has_ptp(bp))
-@@ -2816,6 +2988,8 @@
+@@ -2816,6 +2988,8 @@ static u32 gem_mdc_clk_div(struct macb *
  {
  	u32 config;
  	unsigned long pclk_hz = clk_get_rate(bp->pclk);
@@ -262,7 +262,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  
  	if (pclk_hz <= 20000000)
  		config = GEM_BF(CLK, GEM_CLK_DIV8);
-@@ -2846,6 +3020,8 @@
+@@ -2846,6 +3020,8 @@ static u32 macb_mdc_clk_div(struct macb
  		return gem_mdc_clk_div(bp);
  
  	pclk_hz = clk_get_rate(bp->pclk);
@@ -271,7 +271,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  	if (pclk_hz <= 20000000)
  		config = MACB_BF(CLK, MACB_CLK_DIV8);
  	else if (pclk_hz <= 40000000)
-@@ -4798,6 +4974,123 @@
+@@ -4798,6 +4974,123 @@ static const struct macb_usrio_config ma
  	.refclk = MACB_BIT(CLKEN),
  };
  
@@ -395,7 +395,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  #if defined(CONFIG_OF)
  /* 1518 rounded up */
  #define AT91ETHER_MAX_RBUFF_SZ	0x600
-@@ -5514,6 +5807,8 @@
+@@ -5514,6 +5807,8 @@ static const struct macb_config raspberr
  };
  
  static const struct of_device_id macb_dt_ids[] = {
@@ -404,7 +404,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  	{ .compatible = "cdns,at91sam9260-macb", .data = &at91sam9260_config },
  	{ .compatible = "cdns,macb" },
  	{ .compatible = "cdns,np4-macb", .data = &np4_config },
-@@ -5553,6 +5848,12 @@
+@@ -5553,6 +5848,12 @@ static const struct macb_config default_
  	.jumbo_max_len = 10240,
  };
  
@@ -417,7 +417,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  static int macb_probe(struct platform_device *pdev)
  {
  	const struct macb_config *macb_config = &default_gem_config;
-@@ -5588,6 +5889,17 @@
+@@ -5588,6 +5889,17 @@ static int macb_probe(struct platform_de
  		}
  	}
  
@@ -435,7 +435,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  	err = clk_init(pdev, &pclk, &hclk, &tx_clk, &rx_clk, &tsu_clk);
  	if (err)
  		return err;
-@@ -5645,6 +5957,7 @@
+@@ -5645,6 +5957,7 @@ static int macb_probe(struct platform_de
  	device_set_wakeup_capable(&pdev->dev, 1);
  
  	bp->usrio = macb_config->usrio;
@@ -443,7 +443,7 @@ Signed-off-by: coolsnowwolf <coolsnowwolf@gmail.com>
  
  	/* By default we set to partial store and forward mode for zynqmp.
  	 * Disable if not set in devicetree.
-@@ -6092,6 +6405,7 @@
+@@ -6092,6 +6405,7 @@ static struct platform_driver macb_drive
  	.driver		= {
  		.name		= "macb",
  		.of_match_table	= of_match_ptr(macb_dt_ids),

@@ -10,7 +10,7 @@
  	select ECONET_EN751221_TIMER
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
-@@ -71,7 +71,7 @@
+@@ -71,7 +71,7 @@ config USB_XHCI_HISTB
  config USB_XHCI_MTK
  	tristate "xHCI support for MediaTek SoCs"
  	select MFD_SYSCON

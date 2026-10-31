@@ -36,7 +36,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  u32 airoha_rr(void __iomem *base, u32 offset)
  {
  	return readl(base + offset);
-@@ -880,6 +884,90 @@ static int airoha_qdma_lro_rx_skb(struct airoha_queue *q,
+@@ -880,6 +884,90 @@ static int airoha_qdma_lro_rx_skb(struct
  	return 0;
  }
  
@@ -127,7 +127,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
  {
  	enum dma_data_direction dir = page_pool_get_dma_dir(q->page_pool);
-@@ -889,9 +977,10 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+@@ -889,9 +977,10 @@ static int airoha_qdma_rx_process(struct
  	while (done < budget) {
  		struct airoha_queue_entry *e = &q->entry[q->tail];
  		struct airoha_qdma_desc *desc = &q->desc[q->tail];
@@ -140,7 +140,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		int data_len, len;
  		struct page *page;
  
-@@ -917,8 +1006,49 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+@@ -917,8 +1006,49 @@ static int airoha_qdma_rx_process(struct
  		if (IS_ERR(dev))
  			goto free_frag;
  
@@ -190,7 +190,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  		if (!q->skb) { /* first buffer */
  			q->skb = napi_build_skb(e->buf - AIROHA_RX_HEADROOM,
-@@ -984,10 +1114,19 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+@@ -984,10 +1114,19 @@ static int airoha_qdma_rx_process(struct
  					     false);
  
  		done++;
@@ -210,7 +210,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		if (q->skb) {
  			dev_kfree_skb(q->skb);
  			q->skb = NULL;
-@@ -1183,6 +1322,20 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
+@@ -1183,6 +1322,20 @@ static void airoha_qdma_wake_netdev_txqs
  
  				netif_wake_subqueue(netdev, j);
  			}
@@ -231,7 +231,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		}
  	}
  	q->txq_stopped = false;
-@@ -1277,15 +1430,29 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
+@@ -1277,15 +1430,29 @@ static int airoha_qdma_tx_napi_poll(stru
  		q->queued--;
  
  		if (skb) {
@@ -264,7 +264,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  			dev_kfree_skb_any(skb);
  		}
-@@ -2201,15 +2368,30 @@ static int airoha_dev_open(struct net_device *netdev)
+@@ -2201,15 +2368,30 @@ static int airoha_dev_open(struct net_de
  		return -EBUSY;
  	}
  
@@ -286,11 +286,11 @@ Signed-off-by: lean <chenlin@fnnas.com>
 +			netdev_err(netdev, "could not attach PHY: %d\n", err);
 +			return err;
 +		}
- 
--	netif_tx_start_all_queues(netdev);
++
 +		phylink_start(dev->phylink);
 +	}
-+
+ 
+-	netif_tx_start_all_queues(netdev);
 +	if (test_bit(AIROHA_DEV_F_PON, &dev->flags)) {
 +		/* airoha-xpon opens the queue and carrier after O5 bearer setup. */
 +		netif_carrier_off(netdev);
@@ -301,7 +301,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	err = airoha_set_vip_for_gdm_port(dev, true);
  	if (err)
  		goto err_phy_stop;
-@@ -2234,12 +2416,33 @@ static int airoha_dev_open(struct net_device *netdev)
+@@ -2234,12 +2416,33 @@ static int airoha_dev_open(struct net_de
  	if (netdev->features & NETIF_F_LRO)
  		airoha_dev_lro_enable(dev);
  
@@ -337,7 +337,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	return err;
  }
-@@ -2249,9 +2452,15 @@ static int airoha_dev_stop(struct net_device *netdev)
+@@ -2249,9 +2452,15 @@ static int airoha_dev_stop(struct net_de
  	struct airoha_gdm_dev *dev = netdev_priv(netdev);
  	struct airoha_gdm_port *port = dev->port;
  
@@ -354,7 +354,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	airoha_set_vip_for_gdm_port(dev, false);
  
  	if (--port->users)
-@@ -2264,7 +2473,8 @@ static int airoha_dev_stop(struct net_device *netdev)
+@@ -2264,7 +2473,8 @@ static int airoha_dev_stop(struct net_de
  	if (netdev->features & NETIF_F_LRO)
  		airoha_dev_lro_disable(dev);
  
@@ -364,7 +364,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	return 0;
  }
-@@ -2627,11 +2837,66 @@ static int airoha_dev_set_features(struct net_device *netdev,
+@@ -2627,11 +2837,66 @@ static int airoha_dev_set_features(struc
  	return 0;
  }
  
@@ -435,7 +435,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	struct airoha_queue_entry *e;
  	struct airoha_qdma *qdma;
  	struct netdev_queue *txq;
-@@ -2640,25 +2905,69 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2640,25 +2905,69 @@ static netdev_tx_t airoha_dev_xmit(struc
  	dma_addr_t addr;
  	int i = 0, qid;
  	u16 index;
@@ -446,14 +446,13 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	qdma = rcu_dereference(dev->qdma);
  	qid = airoha_qdma_get_txq(qdma, skb_get_queue_mapping(skb));
 -	tag = airoha_get_dsa_tag(skb, netdev);
--
+ 
 -	msg0 = FIELD_PREP(QDMA_ETH_TXMSG_CHAN_MASK,
 -			  qid / AIROHA_NUM_QOS_QUEUES) |
 -	       FIELD_PREP(QDMA_ETH_TXMSG_QUEUE_MASK,
 -			  qid % AIROHA_NUM_QOS_QUEUES) |
 -	       FIELD_PREP(QDMA_ETH_TXMSG_SP_TAG_MASK, tag);
 -	if (skb->ip_summed == CHECKSUM_PARTIAL)
-+
 +	pon_tag = READ_ONCE(dev->pon_qdma_tag);
 +	if (ctrl) {
 +		/* Control frames use dedicated OAM and OMCC descriptor mappings. */
@@ -515,7 +514,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		if (skb_cow_head(skb, 0))
  			goto error;
  
-@@ -2672,9 +2981,26 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2672,9 +2981,26 @@ static netdev_tx_t airoha_dev_xmit(struc
  	}
  
  	fport = airoha_get_fe_port(dev);
@@ -543,7 +542,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	q = &qdma->q_tx[qid];
  	if (WARN_ON_ONCE(!q->ndesc))
-@@ -2685,11 +3011,15 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2685,11 +3011,15 @@ static netdev_tx_t airoha_dev_xmit(struc
  	if (q->flushing)
  		goto error_unlock;
  
@@ -560,7 +559,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		netif_tx_stop_queue(txq);
  		q->txq_stopped = true;
  		spin_unlock_bh(&q->lock);
-@@ -2701,9 +3031,8 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2701,9 +3031,8 @@ static netdev_tx_t airoha_dev_xmit(struc
  	e = list_first_entry(&q->tx_list, struct airoha_queue_entry,
  			     list);
  	len = skb_headlen(skb);
@@ -572,7 +571,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		goto error_unlock;
  
  	e->dma_type = AIROHA_DMA_MAP_SINGLE;
-@@ -2738,14 +3067,27 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2738,14 +3067,27 @@ static netdev_tx_t airoha_dev_xmit(struc
  			break;
  
  		len = skb_frag_size(frag);
@@ -602,7 +601,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	skb_tx_timestamp(skb);
  	netdev_tx_sent_queue(txq, skb->len);
-@@ -2771,13 +3113,64 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+@@ -2771,13 +3113,64 @@ error_unmap:
  error_unlock:
  	spin_unlock_bh(&q->lock);
  error:
@@ -668,7 +667,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static void airoha_ethtool_get_drvinfo(struct net_device *netdev,
  				       struct ethtool_drvinfo *info)
  {
-@@ -2854,6 +3247,9 @@ airoha_ethtool_get_link_ksettings(struct net_device *netdev,
+@@ -2854,6 +3247,9 @@ airoha_ethtool_get_link_ksettings(struct
  {
  	struct airoha_gdm_dev *dev = netdev_priv(netdev);
  
@@ -678,7 +677,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
  }
  
-@@ -2863,6 +3259,9 @@ airoha_ethtool_set_link_ksettings(struct net_device *netdev,
+@@ -2863,6 +3259,9 @@ airoha_ethtool_set_link_ksettings(struct
  {
  	struct airoha_gdm_dev *dev = netdev_priv(netdev);
  
@@ -688,7 +687,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
  }
  
-@@ -3729,6 +4128,209 @@ static const struct net_device_ops airoha_netdev_ops = {
+@@ -3729,6 +4128,209 @@ static const struct net_device_ops airoh
  	.ndo_setup_tc		= airoha_dev_tc_setup,
  };
  
@@ -898,7 +897,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static const struct ethtool_ops airoha_ethtool_ops = {
  	.get_drvinfo		= airoha_ethtool_get_drvinfo,
  	.get_eth_mac_stats      = airoha_ethtool_get_mac_stats,
-@@ -4000,9 +4602,22 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+@@ -4000,9 +4602,22 @@ static int airoha_alloc_gdm_device(struc
  	dev->port = port;
  	dev->eth = eth;
  	dev->nbq = nbq;
@@ -922,7 +921,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  }
  
  static int airoha_alloc_gdm_port(struct airoha_eth *eth,
-@@ -4275,7 +4890,8 @@ static void airoha_remove(struct platform_device *pdev)
+@@ -4275,7 +4890,8 @@ static void airoha_remove(struct platfor
  
  			netdev = netdev_from_priv(dev);
  			unregister_netdev(netdev);

@@ -27,7 +27,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  struct mtk_gen3_pcie;
  
-@@ -159,6 +162,7 @@
+@@ -159,6 +162,7 @@ enum mtk_gen3_pcie_flags {
   * @power_up: pcie power_up callback
   * @phy_resets: phy reset lines SoC data.
   * @sys_clk_rdy_time_us: System clock ready time override (microseconds)
@@ -35,7 +35,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
   * @flags: pcie device flags.
   */
  struct mtk_gen3_pcie_pdata {
-@@ -168,6 +172,7 @@
+@@ -168,6 +172,7 @@ struct mtk_gen3_pcie_pdata {
  		int num_resets;
  	} phy_resets;
  	u8 sys_clk_rdy_time_us;
@@ -43,7 +43,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	u32 flags;
  };
  
-@@ -411,42 +416,56 @@
+@@ -411,42 +416,56 @@ static void mtk_pcie_enable_msi(struct m
  	writel_relaxed(val, pcie->base + PCIE_INT_ENABLE_REG);
  }
  
@@ -123,7 +123,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	/* If parameter is present, adjust SYS_CLK_RDY_TIME to avoid glitching */
  	if (pcie->soc->sys_clk_rdy_time_us) {
-@@ -503,7 +522,7 @@
+@@ -503,7 +522,7 @@ static int mtk_pcie_startup_port(struct
  	/* Check if the link is up or not */
  	err = readl_poll_timeout(pcie->base + PCIE_LINK_STATUS_REG, val,
  				 !!(val & PCIE_PORT_LINKUP), 20,
@@ -132,7 +132,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	if (err) {
  		const char *ltssm_state;
  		int ltssm_index;
-@@ -959,9 +978,10 @@
+@@ -959,9 +978,10 @@ static int mtk_pcie_en7581_power_up(stru
  {
  	struct pci_host_bridge *host = pci_host_bridge_from_priv(pcie);
  	unsigned int num_lanes = max(1, pcie->num_lanes);
@@ -144,7 +144,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	u32 val, args[2], size;
  	resource_size_t addr;
  	int i, err;
-@@ -969,18 +989,29 @@
+@@ -969,18 +989,29 @@ static int mtk_pcie_en7581_power_up(stru
  	if (num_lanes > 2)
  		return dev_err_probe(dev, -EINVAL, "unsupported num-lanes, maximum 2 lanes supported\n");
  
@@ -179,7 +179,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	/* Wait for the time needed to complete the reset lines assert. */
  	msleep(PCIE_EN7581_RESET_TIME_MS);
-@@ -993,12 +1024,16 @@
+@@ -993,12 +1024,16 @@ static int mtk_pcie_en7581_power_up(stru
  							   "mediatek,pbus-csr",
  							   ARRAY_SIZE(args),
  							   args);
@@ -200,7 +200,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	addr = entry->res->start - entry->offset;
  	regmap_write(pbus_regmap, args[0], lower_32_bits(addr));
-@@ -1011,7 +1046,6 @@
+@@ -1011,7 +1046,6 @@ static int mtk_pcie_en7581_power_up(stru
  		return err;
  	}
  
@@ -208,7 +208,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	err = reset_control_bulk_assert(MAX_NUM_PERSTOUT_RESETS,
  					pcie->perstout_resets);
  	if (err) {
-@@ -1031,7 +1065,7 @@
+@@ -1031,7 +1065,7 @@ static int mtk_pcie_en7581_power_up(stru
  	err = phy_init(pcie->phy);
  	if (err) {
  		dev_err(dev, "failed to initialize PHY\n");
@@ -217,7 +217,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	}
  
  	err = phy_power_on(pcie->phy);
-@@ -1071,6 +1105,7 @@
+@@ -1071,6 +1105,7 @@ static int mtk_pcie_en7581_power_up(stru
  	 * Wait is still needed for refclk to stabilize
  	 */
  	msleep(PCIE_T_PVPERL_MS);
@@ -225,7 +225,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	/* Configure all the lines to the same EQ config */
  	for (i = 0; i < num_lanes; i++) {
-@@ -1079,30 +1114,50 @@
+@@ -1079,30 +1114,50 @@ static int mtk_pcie_en7581_power_up(stru
  		if (i == 1)
  			base = pcie->sec_base;
  
@@ -289,7 +289,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	clk_bulk_disable_unprepare(pcie->num_clks, pcie->clks);
  err_clk_prepare_enable:
  	pm_runtime_put_sync(dev);
-@@ -1113,6 +1168,9 @@
+@@ -1113,6 +1168,9 @@ err_phy_deassert:
  	phy_power_off(pcie->phy);
  err_phy_on:
  	phy_exit(pcie->phy);
@@ -299,7 +299,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	return err;
  }
-@@ -1209,7 +1267,11 @@
+@@ -1209,7 +1267,11 @@ static int mtk_pcie_get_controller_max_l
  
  static int mtk_pcie_setup(struct mtk_gen3_pcie *pcie)
  {
@@ -312,7 +312,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  
  	err = mtk_pcie_parse_port(pcie);
  	if (err)
-@@ -1227,17 +1289,15 @@
+@@ -1227,17 +1289,15 @@ static int mtk_pcie_setup(struct mtk_gen
  	if (err)
  		return err;
  
@@ -336,7 +336,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		}
  	}
  
-@@ -1306,6 +1366,20 @@
+@@ -1306,6 +1366,20 @@ static void mtk_pcie_remove(struct platf
  	mtk_pcie_power_down(pcie);
  }
  
@@ -357,7 +357,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  static void mtk_pcie_irq_save(struct mtk_gen3_pcie *pcie)
  {
  	int i;
-@@ -1435,6 +1509,7 @@
+@@ -1435,6 +1509,7 @@ static const struct mtk_gen3_pcie_pdata
  		.id[2] = "phy-lane2",
  		.num_resets = 3,
  	},
@@ -365,7 +365,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  	.flags = SKIP_PCIE_RSTB,
  };
  
-@@ -1449,6 +1524,7 @@
+@@ -1449,6 +1524,7 @@ MODULE_DEVICE_TABLE(of, mtk_pcie_of_matc
  static struct platform_driver mtk_pcie_driver = {
  	.probe = mtk_pcie_probe,
  	.remove = mtk_pcie_remove,
@@ -375,7 +375,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
  		.of_match_table = mtk_pcie_of_match,
 --- a/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml
 +++ b/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml
-@@ -125,6 +125,13 @@
+@@ -125,6 +125,13 @@ properties:
        Phandle with two arguments to the syscon node used to detect if
        a given address is accessible on PCIe controller.
  
@@ -389,7 +389,7 @@ Signed-off-by: lean <chenlin@fnnas.com>
    '#interrupt-cells':
      const: 1
  
-@@ -297,6 +304,9 @@
+@@ -297,6 +304,9 @@ allOf:
              - const: phy-lane0
              - const: phy-lane1
              - const: phy-lane2

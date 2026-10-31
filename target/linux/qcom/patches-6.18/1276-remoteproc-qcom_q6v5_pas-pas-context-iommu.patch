@@ -8,7 +8,7 @@
  #include <linux/kernel.h>
  #include <linux/module.h>
  #include <linux/of.h>
-@@ -119,8 +120,8 @@
+@@ -119,8 +120,8 @@ struct qcom_pas {
  	struct qcom_rproc_ssr ssr_subdev;
  	struct qcom_sysmon *sysmon;
  
@@ -19,7 +19,7 @@
  };
  
  static void qcom_pas_segment_dump(struct rproc *rproc,
-@@ -213,9 +214,9 @@
+@@ -213,9 +214,9 @@ static int qcom_pas_unprepare(struct rpr
  	 * auth_and_reset() was successful, but in other cases clean it up
  	 * here.
  	 */
@@ -31,7 +31,7 @@
  
  	return 0;
  }
-@@ -246,17 +247,11 @@
+@@ -246,17 +247,11 @@ static int qcom_pas_load(struct rproc *r
  			return ret;
  		}
  
@@ -53,7 +53,7 @@
  			goto release_dtb_firmware;
  		}
  	}
-@@ -269,6 +264,22 @@
+@@ -269,6 +264,22 @@ release_dtb_firmware:
  	return ret;
  }
  
@@ -76,7 +76,7 @@
  static int qcom_pas_start(struct rproc *rproc)
  {
  	struct qcom_pas *pas = rproc->priv;
-@@ -303,54 +314,62 @@
+@@ -303,54 +314,62 @@ static int qcom_pas_start(struct rproc *
  	}
  
  	if (pas->dtb_pas_id) {
@@ -156,7 +156,7 @@
  disable_px_supply:
  	if (pas->px_supply)
  		regulator_disable(pas->px_supply);
-@@ -412,8 +431,12 @@
+@@ -412,8 +431,12 @@ static int qcom_pas_stop(struct rproc *r
  			if (ret)
  				dev_err(pas->dev, "failed to shutdown dtb: %d\n", ret);
  		}
@@ -169,7 +169,7 @@
  	/*
  	 * qcom_q6v5_prepare is not called in qcom_pas_attach, skip unprepare to
  	 * avoid mismatch.
-@@ -445,6 +468,61 @@
+@@ -445,6 +468,61 @@ static void *qcom_pas_da_to_va(struct rp
  	return pas->mem_region + offset;
  }
  
@@ -231,7 +231,7 @@
  static unsigned long qcom_pas_panic(struct rproc *rproc)
  {
  	struct qcom_pas *pas = rproc->priv;
-@@ -499,8 +577,8 @@
+@@ -499,8 +577,8 @@ static int qcom_pas_attach(struct rproc
  
  	if (pas->preloaded) {
  		ret = qcom_pas_get_boot_state_from_smp2p(pas,
@@ -242,7 +242,7 @@
  	} else {
  		ret = irq_get_irqchip_state(pas->q6v5.fatal_irq,
  					    IRQCHIP_STATE_LINE_LEVEL,
-@@ -523,6 +601,11 @@
+@@ -523,6 +601,11 @@ static int qcom_pas_attach(struct rproc
  	}
  
  	if (unlikely(!ready_state)) {
@@ -254,7 +254,7 @@
  		dev_err(pas->dev, pas->preloaded ?
  			"Failed to detect already running subsystem\n" :
  			"Failed to get subsystem ready interrupt\n");
-@@ -533,6 +616,7 @@
+@@ -533,6 +616,7 @@ static int qcom_pas_attach(struct rproc
  
  	if (!pas->preloaded) {
  		ret = qcom_q6v5_ping_subsystem(&pas->q6v5);
@@ -262,7 +262,7 @@
  		if (ret) {
  			dev_err(pas->dev, "Failed to ping subsystem, assuming device crashed\n");
  			rproc_report_crash(rproc, RPROC_FATAL_ERROR);
-@@ -555,7 +639,7 @@
+@@ -555,7 +639,7 @@ static const struct rproc_ops qcom_pas_o
  	.start = qcom_pas_start,
  	.stop = qcom_pas_stop,
  	.da_to_va = qcom_pas_da_to_va,
@@ -271,7 +271,7 @@
  	.load = qcom_pas_load,
  	.panic = qcom_pas_panic,
  	.attach = qcom_pas_attach,
-@@ -566,7 +650,7 @@
+@@ -566,7 +650,7 @@ static const struct rproc_ops qcom_pas_m
  	.start = qcom_pas_start,
  	.stop = qcom_pas_stop,
  	.da_to_va = qcom_pas_da_to_va,
@@ -280,7 +280,7 @@
  	.load = qcom_pas_load,
  	.panic = qcom_pas_panic,
  	.coredump = qcom_pas_minidump,
-@@ -664,54 +748,38 @@
+@@ -664,54 +748,38 @@ static void qcom_pas_pds_detach(struct q
  
  static int qcom_pas_alloc_memory_region(struct qcom_pas *pas)
  {
@@ -355,7 +355,7 @@
  	}
  
  	return 0;
-@@ -720,7 +788,6 @@
+@@ -720,7 +788,6 @@ static int qcom_pas_alloc_memory_region(
  static int qcom_pas_assign_memory_region(struct qcom_pas *pas)
  {
  	struct qcom_scm_vmperm perm[MAX_ASSIGN_COUNT];
@@ -363,7 +363,7 @@
  	unsigned int perm_size;
  	int offset;
  	int ret;
-@@ -729,17 +796,15 @@
+@@ -729,17 +796,15 @@ static int qcom_pas_assign_memory_region
  		return 0;
  
  	for (offset = 0; offset < pas->region_assign_count; ++offset) {
@@ -387,7 +387,7 @@
  		}
  
  		if (pas->region_assign_shared)  {
-@@ -754,8 +819,8 @@
+@@ -754,8 +819,8 @@ static int qcom_pas_assign_memory_region
  			perm_size = 1;
  		}
  
@@ -398,7 +398,7 @@
  		pas->region_assign_owners[offset] = BIT(QCOM_SCM_VMID_HLOS);
  
  		ret = qcom_scm_assign_mem(pas->region_assign_phys[offset],
-@@ -835,6 +900,7 @@
+@@ -835,6 +900,7 @@ static int qcom_pas_probe(struct platfor
  		return -ENOMEM;
  	}
  
@@ -406,7 +406,7 @@
  	rproc->auto_boot = desc->auto_boot;
  	rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_NONE);
  
-@@ -900,6 +966,24 @@
+@@ -900,6 +966,24 @@ static int qcom_pas_probe(struct platfor
  
  	qcom_add_ssr_subdev(rproc, &pas->ssr_subdev, desc->ssr_name);
  
@@ -431,7 +431,7 @@
  	if (desc->early_boot) {
  		ret = qcom_q6v5_ping_subsystem_init(&pas->q6v5, pdev);
  		if (ret)
-@@ -1619,7 +1703,7 @@
+@@ -1619,7 +1703,7 @@ static const struct of_device_id qcom_pa
  	{ .compatible = "qcom,milos-wpss-pas", .data = &sc7280_wpss_resource},
  	{ .compatible = "qcom,msm8226-adsp-pil", .data = &msm8996_adsp_resource},
  	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8996_adsp_resource},
@@ -440,7 +440,7 @@
  	{ .compatible = "qcom,msm8996-adsp-pil", .data = &msm8996_adsp_resource},
  	{ .compatible = "qcom,msm8996-slpi-pil", .data = &msm8996_slpi_resource_init},
  	{ .compatible = "qcom,msm8998-adsp-pas", .data = &msm8996_adsp_resource},
-@@ -1646,6 +1730,7 @@
+@@ -1646,6 +1730,7 @@ static const struct of_device_id qcom_pa
  	{ .compatible = "qcom,sc8280xp-nsp0-pas", .data = &sc8280xp_nsp0_resource},
  	{ .compatible = "qcom,sc8280xp-nsp1-pas", .data = &sc8280xp_nsp1_resource},
  	{ .compatible = "qcom,sdm660-adsp-pas", .data = &adsp_resource_init},
